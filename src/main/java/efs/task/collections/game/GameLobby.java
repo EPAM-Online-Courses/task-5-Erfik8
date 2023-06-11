@@ -28,29 +28,61 @@ public class GameLobby {
 
     //TODO Dodać miasta i odpowiadających im bohaterów z DLC gry do mapy dostępnych
     // miast - playableTownsWithHeroesList, tylko jeżeli jeszcze się na niej nie znajdują.
-    public void enableDLC() {}
+    public void enableDLC() {
+        for (Town townElement : dataProvider.getDLCTownsList()) {
+            List<Hero> tmpHeroList = new ArrayList<>();
+            for (Hero heroElement : dataProvider.getDLCHeroesSet()) {
+                if (townElement.getStartingHeroClasses().contains(heroElement.getHeroClass())) {
+                    tmpHeroList.add(heroElement);
+                }
+            }
+            playableTownsWithHeroesList.put(townElement, tmpHeroList);
+        }
+    }
 
 
     //TODO Usunąć miasta i odpowiadających im bohaterów z DLC gry z mapy dostępnych
     // miast - playableTownsWithHeroesList.
-    public void disableDLC() {}
+    public void disableDLC() {
+        for (Town townElement : dataProvider.getDLCTownsList()) {
+            playableTownsWithHeroesList.remove(townElement);
+        }
+    }
 
     // TODO Sprawdza czy mapa playableCharactersByTown zawiera dane miasto.
     //  Jeśli tak zwróć listę bohaterów z tego miasta.
     //  Jeśli nie rzuć wyjątek NoSuchElementException z wiadomością NO_SUCH_TOWN + town.getName()
-    public List<Hero> getHeroesFromTown(Town town) { return null;}
+    public List<Hero> getHeroesFromTown(Town town) { 
+        List<Hero> townElement = playableTownsWithHeroesList.get(town);
+        if (townElement != null) return townElement;
+        else throw new NoSuchElementException(NO_SUCH_TOWN + town.getTownName());}
 
     // TODO Metoda powinna zwracać mapę miast w kolejności alfabetycznej z odpowiadającymi im bohaterami.
     //  Każde z miast charakteryzuje się dwoma klasami bohaterów dostępnymi dla tego miasta - Town.startingHeroClass.
     //  Mapa ma zawierać pare klucz-wartość gdzie klucz: miasto, wartość: lista bohaterów;
     public Map<Town, List<Hero>> mapHeroesToStartingTowns(List<Town> availableTowns, Set<Hero> availableHeroes) {
-        return null;
+        Map<Town, List<Hero>> townHeroListMap = new TreeMap<>();
+        for (Town townElement : availableTowns) {
+            List<Hero> tmpHeroList = new ArrayList<>();
+            for (Hero heroElement : availableHeroes) {
+                if (townElement.getStartingHeroClasses().contains(heroElement.getHeroClass()))
+                    tmpHeroList.add(heroElement);
+            }
+            townHeroListMap.put(townElement, tmpHeroList);
+        }
+        return townHeroListMap;
     }
 
     //TODO metoda zwraca wybranego bohatera na podstawie miasta z którego pochodzi i imienia.
     // Jeżeli istnieje usuwa go z listy dostępnych bohaterów w danym mieście i zwraca bohatera.
     // Jeżeli nie ma go na liście dostępnych bohaterów rzuca NoSuchElementException z wiadomością HERO_NOT_FOUND + name
     public Hero selectHeroByName(Town heroTown, String name) {
-        return null;
+        for (Hero heroElement : playableTownsWithHeroesList.get(heroTown)) {
+            if (heroElement.getName().equals(name)) {
+                playableTownsWithHeroesList.get(heroTown).remove(heroElement);
+                return heroElement;
+            }
+        }
+        throw new NoSuchElementException(HERO_NOT_FOUND + name);
     }
 }
