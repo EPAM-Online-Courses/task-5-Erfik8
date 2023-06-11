@@ -1,6 +1,6 @@
 package efs.task.collections.entity;
 
-import java.util.List;
+import java.util.*;
 
 public class Town {
     private String townName;
