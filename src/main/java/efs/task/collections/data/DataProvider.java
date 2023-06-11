@@ -3,8 +3,7 @@ package efs.task.collections.data;
 import efs.task.collections.entity.Hero;
 import efs.task.collections.entity.Town;
 
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class DataProvider {
 
