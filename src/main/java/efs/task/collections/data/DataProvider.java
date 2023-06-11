@@ -50,7 +50,6 @@ public class DataProvider {
 
     //TODO Analogicznie do getHeroesSet utwórz listę bohaterów na podstawie tablicy Data.DLCCharactersArray
     public Set<Hero> getDLCHeroesSet() {
-        return null;
         Set<Hero> heroesSet = new HashSet<>();
         for (String heroInfo : Data.dlcCharactersArray) {
             String[] heroSplit = heroInfo.split(DATA_SEPARATOR);
