@@ -1,4 +1,5 @@
 package efs.task.collections.entity;
+import java.util.*;
 
 public class Hero {
     private String name;
